@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Extração de Palavras-Chave</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Strings: Extraindo Palavras-Chave</h1>
+  <p>Cole seu texto abaixo:</p>
+  <textarea id="texto" placeholder="Cole seu texto aqui..."></textarea><br>
+  <button onclick="extrairPalavrasChave()">Extrair Palavras-Chave</button>
+  <div id="resultado"></div>
+
+  <script>
+    const stopwords = [/* mesma lista de antes... */];
+
+    function extrairPalavrasChave() {
+      const texto = document.getElementById("texto").value.toLowerCase();
+      const palavras = texto.match(/\b\w+\b/g);
+      const frequencia = {};
+
+      palavras.forEach(palavra => {
+        if (!stopwords.includes(palavra)) {
+          frequencia[palavra] = (frequencia[palavra] || 0) + 1;
+        }
+      });
+
+      const palavrasOrdenadas = Object.entries(frequencia)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10);
+
+      let resultado = "<h3>Top 10 Palavras-Chave:</h3><ul>";
+      palavrasOrdenadas.forEach(([palavra, contagem]) => {
+        resultado += `<li><strong>${palavra}</strong> – ${contagem} vez(es)</li>`;
+      });
+      resultado += "</ul>";
+
+      document.getElementById("resultado").innerHTML = resultado;
+    }
+  </script>
+</body>
+</html>
